@@ -1,0 +1,187 @@
+Table usuario [headercolor: #175e7a] {
+	id integer [ pk, increment, not null ]
+	nome varchar(120) [ not null ]
+	email varchar(160) [ not null, unique ]
+	senha_hash varchar(255) [ not null ]
+	perfil varchar(20) [ not null, default: 'usuario' ]
+	criado_em timestamp [ not null, default: CURRENT_TIMESTAMP ]
+}
+
+Table tema [headercolor: #175e7a] {
+	id integer [ pk, increment, not null ]
+	nome varchar(80) [ not null, unique ]
+	descricao text
+}
+
+Table palavra_chave [headercolor: #175e7a] {
+	id integer [ pk, increment, not null ]
+	termo varchar(60) [ not null, unique ]
+}
+
+Table fonte [headercolor: #175e7a] {
+	id integer [ pk, increment, not null ]
+	titulo varchar(200) [ not null ]
+	instituicao varchar(120)
+	url varchar(300)
+	ano integer
+}
+
+Table conteudo [headercolor: #175e7a] {
+	id integer [ pk, increment, not null ]
+	tipo varchar(30) [ not null ]
+	titulo varchar(200) [ not null ]
+	descricao text
+	autor varchar(160)
+	url_externo varchar(300)
+	ano_publicacao integer
+	destaque boolean [ not null, default: 0 ]
+	criado_em timestamp [ not null, default: CURRENT_TIMESTAMP ]
+}
+
+Table conteudo_tema [headercolor: #175e7a] {
+	conteudo_id integer [ pk, not null ]
+	tema_id integer [ pk, not null ]
+}
+
+Table conteudo_palavra_chave [headercolor: #175e7a] {
+	conteudo_id integer [ pk, not null ]
+	palavra_chave_id integer [ pk, not null ]
+}
+
+Table curtida [headercolor: #175e7a] {
+	usuario_id integer [ pk, not null ]
+	conteudo_id integer [ pk, not null ]
+	criada_em timestamp [ not null, default: CURRENT_TIMESTAMP ]
+}
+
+Table salvo [headercolor: #175e7a] {
+	usuario_id integer [ pk, not null ]
+	conteudo_id integer [ pk, not null ]
+	salvo_em timestamp [ not null, default: CURRENT_TIMESTAMP ]
+}
+
+Table afirmacao [headercolor: #175e7a] {
+	id integer [ pk, increment, not null ]
+	tema_id integer [ not null ]
+	enunciado text [ not null ]
+	eh_verdade boolean [ not null ]
+	explicacao text [ not null ]
+}
+
+Table afirmacao_fonte [headercolor: #175e7a] {
+	afirmacao_id integer [ pk, not null ]
+	fonte_id integer [ pk, not null ]
+}
+
+Table resposta_afirmacao [headercolor: #175e7a] {
+	id integer [ pk, increment, not null ]
+	afirmacao_id integer [ not null ]
+	usuario_id integer
+	escolheu_verdade boolean [ not null ]
+	acertou boolean [ not null ]
+	respondida_em timestamp [ not null, default: CURRENT_TIMESTAMP ]
+}
+
+Table indicador [headercolor: #175e7a] {
+	id integer [ pk, increment, not null ]
+	fonte_id integer [ not null ]
+	categoria varchar(40) [ not null ]
+	nome varchar(160) [ not null ]
+	unidade varchar(40)
+}
+
+Table indicador_valor [headercolor: #175e7a] {
+	id integer [ pk, increment, not null ]
+	indicador_id integer [ not null ]
+	ano integer [ not null ]
+	recorte varchar(80)
+	valor decimal(14,2) [ not null ]
+}
+
+Table servico_ajuda [headercolor: #175e7a] {
+	id integer [ pk, increment, not null ]
+	nome varchar(160) [ not null ]
+	tipo varchar(40)
+	telefone varchar(30)
+	url varchar(300)
+	descricao text
+}
+
+Table situacao_ajuda [headercolor: #175e7a] {
+	id integer [ pk, increment, not null ]
+	titulo varchar(160) [ not null ]
+	orientacao text [ not null ]
+}
+
+Table servico_situacao [headercolor: #175e7a] {
+	servico_id integer [ pk, not null ]
+	situacao_id integer [ pk, not null ]
+}
+
+Ref fk_conteudo_tema_conteudo_id_conteudo {
+	conteudo_tema.conteudo_id > conteudo.id [ delete: no action, update: no action ]
+}
+
+Ref fk_conteudo_tema_tema_id_tema {
+	conteudo_tema.tema_id > tema.id [ delete: no action, update: no action ]
+}
+
+Ref fk_conteudo_palavra_chave_conteudo_id_conteudo {
+	conteudo_palavra_chave.conteudo_id > conteudo.id [ delete: no action, update: no action ]
+}
+
+Ref fk_conteudo_palavra_chave_palavra_chave_id_palavra_chave {
+	conteudo_palavra_chave.palavra_chave_id > palavra_chave.id [ delete: no action, update: no action ]
+}
+
+Ref fk_curtida_usuario_id_usuario {
+	curtida.usuario_id > usuario.id [ delete: no action, update: no action ]
+}
+
+Ref fk_curtida_conteudo_id_conteudo {
+	curtida.conteudo_id > conteudo.id [ delete: no action, update: no action ]
+}
+
+Ref fk_salvo_usuario_id_usuario {
+	salvo.usuario_id > usuario.id [ delete: no action, update: no action ]
+}
+
+Ref fk_salvo_conteudo_id_conteudo {
+	salvo.conteudo_id > conteudo.id [ delete: no action, update: no action ]
+}
+
+Ref fk_afirmacao_tema_id_tema {
+	afirmacao.tema_id > tema.id [ delete: no action, update: no action ]
+}
+
+Ref fk_afirmacao_fonte_afirmacao_id_afirmacao {
+	afirmacao_fonte.afirmacao_id > afirmacao.id [ delete: no action, update: no action ]
+}
+
+Ref fk_afirmacao_fonte_fonte_id_fonte {
+	afirmacao_fonte.fonte_id > fonte.id [ delete: no action, update: no action ]
+}
+
+Ref fk_resposta_afirmacao_afirmacao_id_afirmacao {
+	resposta_afirmacao.afirmacao_id > afirmacao.id [ delete: no action, update: no action ]
+}
+
+Ref fk_resposta_afirmacao_usuario_id_usuario {
+	resposta_afirmacao.usuario_id > usuario.id [ delete: no action, update: no action ]
+}
+
+Ref fk_indicador_fonte_id_fonte {
+	indicador.fonte_id > fonte.id [ delete: no action, update: no action ]
+}
+
+Ref fk_indicador_valor_indicador_id_indicador {
+	indicador_valor.indicador_id > indicador.id [ delete: no action, update: no action ]
+}
+
+Ref fk_servico_situacao_servico_id_servico_ajuda {
+	servico_situacao.servico_id > servico_ajuda.id [ delete: no action, update: no action ]
+}
+
+Ref fk_servico_situacao_situacao_id_situacao_ajuda {
+	servico_situacao.situacao_id > situacao_ajuda.id [ delete: no action, update: no action ]
+}
