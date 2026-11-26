@@ -35,11 +35,12 @@ O DeLua reúne em um só lugar conteúdos confiáveis, dados sociais com fonte e
 - **Biblioteca de conteúdos:** livros, textos, artigos, materiais didáticos, vídeos e documentários, organizados por tema e com busca por título, assunto ou palavra-chave.
 - **Dados sociais:** indicadores de educação, trabalho, participação social e violência contra mulheres, com fonte e ano.
 - **Como buscar ajuda:** instituições, serviços e canais oficiais, com orientação por situação.
+- **Ajude você também:** profissionais da saúde, do direito e da psicologia se cadastram para oferecer orientação, e a equipe valida o cadastro antes de publicar.
 - **Curtidas e salvos:** a pessoa usuária curte e salva conteúdos de seu interesse.
 
 ## Modelagem do banco de dados
 
-O modelo tem 17 tabelas, entre elas `usuario`, `conteudo`, `tema`, `afirmacao`, `indicador` e `servico_ajuda`. 
+O modelo tem 18 tabelas, entre elas `usuario`, `profissional` `conteudo`, `tema`, `afirmacao`, `indicador` e `servico_ajuda`. 
 
 ## Como usamos IA
 
